@@ -17,3 +17,11 @@ Note : If the website is down or not responding, you can just simply run the fol
 
 
 ![image](https://github.com/BoppaniSuresh/PropReturns/assets/118003753/5cf1183e-095a-4ca1-ae36-f5cf4dd74e43)
+
+![image](https://github.com/BoppaniSuresh/PropReturns/assets/118003753/e95c36dc-be93-47b0-93c7-1385407137d6)
+
+![image](https://github.com/BoppaniSuresh/PropReturns/assets/118003753/4611b689-e9ee-4c60-9158-1dc92ef8b853)
+
+![image](https://github.com/BoppaniSuresh/PropReturns/assets/118003753/3f76ceb3-803d-4eae-ac43-67ad8b1b1f35)
+
+
