@@ -1,0 +1,9 @@
+alembic==1.12.0
+Flask==2.3.3
+Flask_Migrate==4.0.4
+flask_sqlalchemy==3.0.5
+googletrans==4.0.0rc1
+pandas==2.1.0
+selenium==4.12.0
+SQLAlchemy==2.0.20
+webdriver_manager==4.0.0
