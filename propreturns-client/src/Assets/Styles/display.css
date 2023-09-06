@@ -1,0 +1,48 @@
+.card {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  .datatable-demo .p-datatable {
+    font-size: 15px;
+  }
+  
+  .datatable-demo .p-datatable .p-datatable-header {
+    background-color: #f0f0f0;
+  }
+  
+  .datatable-demo .p-datatable .p-datatable-thead {
+    background-color: #e0e0e0;
+  }
+  
+  .datatable-demo .p-datatable .p-datatable-tbody tr:hover {
+    background-color: #f5f5f5;
+  }
+    
+  .datatable-demo .p-datatable .p-datatable-thead .p-sortable-column {
+    text-align: left;
+    font-weight: bold;
+    color: #333;
+    padding: 0.5rem;
+  }
+  
+  .datatable-demo .p-datatable .p-datatable-tbody td {
+    padding: 0.5rem;
+  }
+  
+  .datatable-demo .p-datatable .p-datatable-tbody .p-datatable-selection {
+    background-color: #f0f0f0;
+  }
+  
+  @media (max-width: 768px) {
+    .datatable-demo .p-datatable .p-datatable-tbody td,
+    .datatable-demo .p-datatable .p-datatable-thead th {
+      text-align: center;
+      font-size: 12px;
+      padding: 0.25rem;
+    }
+  }
+  
