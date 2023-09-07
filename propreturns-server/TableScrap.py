@@ -16,6 +16,8 @@ from flask_migrate import Migrate
 from sqlalchemy import extract
 from sqlalchemy import func
 from sqlalchemy import cast, Date
+import requests
+from urllib.parse import unquote
 app = Flask(__name__)
 
 
@@ -46,11 +48,21 @@ class PreprocessedPropReturns(db.Model):
     Buyer_name = db.Column(db.TEXT)
     Seller_name = db.Column(db.TEXT)
     Other_information = db.Column(db.TEXT)
-    List_no_2 = db.Column(db.TEXT)
-
+    Links = db.Column(db.TEXT)
+    PropertyID = db.Column(db.TEXT)
+    
 
 with app.app_context():
     db.create_all()
+    
+    
+def is_valid_link(link):
+    try:
+        response = requests.head(link)
+        return response.status_code == 200
+    except requests.ConnectionError:
+        return False
+
 
 @app.route('/')
 def index():
@@ -204,7 +216,35 @@ def scrape_data():
         df1['Diarrhea no'] = df1['Diarrhea no'].astype(int)
         df1['Anu_no'] = df1['Anu no'].astype(int)
         df1.dropna(inplace=True)
+        df1['Links'] = df1['List no.2'].str.extract(r'(https://[^\s]+)')
+        df1.drop(columns=['List no.2'], inplace=True)
+        df1['Links'] = df1['Links'].str.strip()
+        df1['PropertyID'] = df1['Links'].str.extract(r'/indexii/([^/]+)')
+
+        df1['PropertyID'] = df1['PropertyID'].apply(unquote)
         
+
+       
+        
+        df1.to_csv('preprocessed_data.csv', index = False)
+        # for j, row in df1.iterrows():
+        #  if row['Links'] and is_valid_link(row['Links']):
+        #     prop_return = PreprocessedPropReturns(
+        #         Anu_no=row['Anu no'],
+        #         Diarrhea_no=row['Diarrhea no'],
+        #         diarrhea_type=row['diarrhea type'],
+        #         Du_Prohibit_Office=row['Du. Prohibit. Office'],
+        #         Year=row['Year'],
+        #         Buyer_name=row['Buyer name'],
+        #         Seller_name=row['Seller name'],
+        #         Other_information=row['Other information'],
+        #         Links=row['Links'],
+        #         PropertyID=row['PropertyID']
+        #         valid = 
+        #     )
+        #     db.session.add(prop_return)
+        # else:
+        #   print(f"Invalid link for Anu_no: {row['Anu no']} - {row['Links']}")
         for j, row in df1.iterrows():
             prop_return = PreprocessedPropReturns(
                 Anu_no=row['Anu no'],
@@ -215,9 +255,12 @@ def scrape_data():
                 Buyer_name=row['Buyer name'],
                 Seller_name=row['Seller name'],
                 Other_information=row['Other information'],
-                List_no_2=row['List no.2']
+                Links=row['Links'],
+                PropertyID=row['PropertyID']
+               
             )
             db.session.add(prop_return)
+            
             
         db.session.commit()
         
@@ -228,8 +271,6 @@ def scrape_data():
     
 
  
-
-
 @app.route('/get_by_document_no', methods=['GET'])
 
 def get_by_document_no():
@@ -249,7 +290,8 @@ def get_by_document_no():
                     'Buyer_name': prop_return.Buyer_name,
                     'Seller_name': prop_return.Seller_name,
                     'Other_information': prop_return.Other_information,
-                    'List_no_2': prop_return.List_no_2
+                    'Links' : prop_return.Links,
+                    'PropertyID' :prop_return.PropertyID
                 })
             return jsonify({"result" : result, "message" : "Data found successfully"})
         else:
@@ -286,7 +328,8 @@ def get_by_year():
                     'Buyer_name': prop_return.Buyer_name,
                     'Seller_name': prop_return.Seller_name,
                     'Other_information': prop_return.Other_information,
-                    'List_no_2': prop_return.List_no_2
+                    'Links' : prop_return.Links,
+                    'PropertyID' :prop_return.PropertyID
                 })
             return jsonify({"result" : result, "message" : "Data found successfully"})
         else:
